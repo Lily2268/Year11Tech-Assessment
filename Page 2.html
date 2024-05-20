@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hotels</title>
+</head>
+<body>
+    <nav class="nav">
+<a href="Tech Assesment index.html">Wellington</a>   
+<a href="Page 1.html">Restaurants</a>
+<a href="Page 2.html">Hotels</a>
+<a href="Page 3.html">History</a>
+<a href="Page 4.html">Shops</a>
+<a href="Page 5.html">Sightseeing</a>
+    </nav> 
+
+<body>
+   <h1>Where to stay in Wellington</h1>
+   <p>Hotels in Wellington can cater for any budget.</p>
+   <h2>James Cook</h2>
+   <p>James Cook is a good budget friendly hotel, that is situated in Lampton Quay in close proximaty to the waterfront with great access to Te Papa and the TSB Arena.</p>
+   <h2>Movenpick</h2>
+   <p>Movenpick hotel Wellington is a newly opened 5 star hotel, situated in the vibrant Cuba Quarter. It has a lot of facilities including a fitness center, and a swimming pool the guests have free use of.</p>
+   <p> Wellington's weather is unpredictable and can be very windy so make sure you pack your rainjacket and sunglasses. </p>
+
+   <img src="Movenpick wellington.jpg" width="400" height="300">
+   <img src="James cook hotel wellington.jpg" width="400" height="300"><br> 
+   <iframe width="400" height="300" src="https://www.youtube.com/embed/2y44Ed4gpSk?si=FSA1dM6UT_1lnFe9" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+   <iframe width="400" height="300" src="https://www.youtube.com/embed/Oyz-8qLC8v4?si=TIUAJmdcTu5D8VKu" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+
+   <h1>Book your hotel</h1>
+</body>
+
+
+
+    <style>
+        
+        body{text-align: center; background-color: rgb(243, 106, 64); color: floralwhite;}
+        #enterDetails {float: left; width: 50%; color: floralwhite ;}
+        #findDetails {float: left; width: 50%; color:floralwhite ;}
+        input {width: 120px;}
+        
+
+    .nav
+a {background-color:rgb(253, 136, 101);
+font-size:
+15px;
+padding:
+8px
+20px;color:
+white;
+font-family:
+Verdana, Geneva,
+Tahoma,
+sans-serif ;
+text-decoration:
+none;}
+
+    .nav
+a:hover {background-color:rgb(226, 123, 92);}
+
+    .nav
+a.active {background-color:rgb(169,
+16,
+174) ;}
+    </style>
+</head>
+<body>
+    <div id="enterDetails">
+         <h1>Enter Details</h1>
+        <h4>ID</h4>
+        <input id="enterID" type="text">
+
+
+        <h4>Name</h4>
+        <input id="enterName" type="text">
+
+
+        <h4>Age</h4>
+        <input id="enterAge" type="number"> <br><br>
+
+
+        <button id="insert">INSERT</button>
+        <button id="update">UPDATE</button>
+        <button id="remove">REMOVE</button> <br><br>
+    </div>
+
+
+    <div id="findDetails">
+         <h1>find by ID</h1>
+         <h4>ID</h4>
+         <input id="findID" type="text"> <br><br>
+         <button id="find">FIND</button>
+
+
+         <h3 id="findName" type="text"></h3>
+         <h3 id="findAge" type="text"></h3> <br><br>
+
+
+    </div>
+
+<script type="module">
+  // Import the functions you need from the SDKs you need
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-app.js";
+  // TODO: Add SDKs for Firebase products that you want to use
+  // https://firebase.google.com/docs/web/setup#available-libraries
+
+  // Your web app's Firebase configuration
+  const firebaseConfig = {
+    apiKey: "AIzaSyB23E4Id7yM4czhHKSLUvNgRnAbWh0bbsU",
+    authDomain: "year-11-tech-assesment-by-lily.firebaseapp.com",
+    projectId: "year-11-tech-assesment-by-lily",
+    storageBucket: "year-11-tech-assesment-by-lily.appspot.com",
+    messagingSenderId: "393508321942",
+    appId: "1:393508321942:web:36635064c44b0613f420b7"
+  };
+
+  // Initialize Firebase
+  const app = initializeApp(firebaseConfig);
+
+      import {getDatabase, set, get, update, remove, ref, child}
+      from "https://www.gstatic.com/firebasejs/10.10.0/firebase-database.js"
+
+      
+
+      const db = getDatabase();
+
+
+      var enterID = document.querySelector("#enterID");
+      var enterName = document.querySelector("#enterName");
+      var enterAge = document.querySelector("#enterAge");
+      var findID = document.querySelector("#findID");
+      var findName = document.querySelector("#findName");
+      var findAge = document.querySelector("#findAge");
+
+
+      var insertBtn = document.querySelector("#insert");
+      var updateBtn = document.querySelector("#update");
+      var removeBtn = document.querySelector("#remove");
+      var findBtn = document.querySelector("#find");
+
+
+      function InsertData() {
+        set(ref(db, "People/"+ enterID.value), {
+             Name: enterName.value,
+             ID: enterID.value,
+             Age: enterAge.value
+        })
+         .then(()=>{
+             alert("Data added successfully");
+        })
+        .catch((error)=>{
+            alert(error);
+        });
+    }
+
+
+   function FindData() {
+      const dbref = ref (db);
+
+
+      get(child(dbref, "People/" + findID.value))
+      .then((snapshot)=>{
+        if (snapshot.exists()) {
+            findName.innerHTML = "Name: " + snapshot.val().Name;
+            findAge.innerHTML = "Age: " + snapshot.val().Age;
+      } else {
+          alert("No data found");
+    }
+   })
+    .catch((error)=>{
+        alert(error)
+   })
+    }
+     
+   function UpdateData() {
+      update(ref(db, "People/" + enterID.value), {
+         Name: enterName.value,
+         Age: enterAge.value
+      })
+      .then(()=>{
+          alert("Data added sucessfully!");  
+    })
+    .catch((error)=>{
+       alert(error);
+    });
+
+
+    }
+
+
+function RemoveData() {
+   remove(ref(db, "People/" + enterID.value))
+   .then(()=>{
+      alert("Data removed successfully!");
+   })
+   .catch((error)=>{
+       alert(error);
+   });
+     
+}
+   
+    insertBtn.addEventListener('click', InsertData);
+    updateBtn.addEventListener('click', UpdateData);
+    removeBtn.addEventListener('click', RemoveData);
+    findBtn.addEventListener('click', FindData);
+    </script>
+</body>
+</html>
+
